@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Week 9 - Subject Marks and Grades</title><style>body{font-family:Arial,sans-serif;background:#f0f4f8;color:#172c3d;padding:30px 15px}main{background:white;max-width:650px;margin:auto;padding:25px;border-radius:12px}button{background:#174c73;color:white;padding:12px 20px;margin:5px;border:0;border-radius:6px;font-size:16px;cursor:pointer}button:disabled{opacity:.5;cursor:default}input{padding:8px;font-size:16px;max-width:90px}label{display:block;margin:15px 0}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:10px;border-bottom:1px solid #ccc}</style></head>
+<body><main><h1>Subject Marks and Grades</h1><p>Enter how many subjects you take, then enter each mark out of 100.</p><p>Lab grading scale: A: 80–100, B: 70–79.99, C: 60–69.99, D: 50–59.99, E: 40–49.99, F: below 40. This is an example scale, not an official NCI grading scale.</p>
+<form onsubmit="createSubjects(); return false;"><label for="count">Number of subjects (1–30)</label><input id="count" type="number" min="1" max="30" step="1" required><button>Create mark fields</button></form>
+<form id="marksForm" hidden onsubmit="showResults(); return false;"><div id="fields"></div><button>Show results</button></form>
+<p id="error" role="alert"></p><section id="results" aria-live="polite"></section></main>
+<script>
+let numberOfSubjects = 0;
+function getGrade(mark) {
+    if (mark >= 80) { return "A"; }
+    else if (mark >= 70) { return "B"; }
+    else if (mark >= 60) { return "C"; }
+    else if (mark >= 50) { return "D"; }
+    else if (mark >= 40) { return "E"; }
+    else { return "F"; }
+}
+function createSubjects() {
+    const value = document.getElementById("count").value;
+    const count = Number(value);
+    if (value.trim() === "" || !Number.isInteger(count) || count < 1 || count > 30) {
+        document.getElementById("error").textContent = "Enter a whole number from 1 to 30.";
+        return;
+    }
+    numberOfSubjects = count;
+    document.getElementById("error").textContent = "";
+    document.getElementById("results").textContent = "";
+    document.getElementById("fields").textContent = "";
+    // Create one labelled mark field for each subject.
+    for (let i = 1; i <= numberOfSubjects; i++) {
+        const label = document.createElement("label");
+        label.htmlFor = "mark" + i;
+        label.textContent = "Subject " + i + " mark: ";
+        const input = document.createElement("input");
+        input.id = "mark" + i;
+        input.type = "number"; input.min = "0"; input.max = "100";
+        input.step = "any"; input.required = true;
+        label.appendChild(input);
+        document.getElementById("fields").appendChild(label);
+    }
+    document.getElementById("marksForm").hidden = false;
+}
+function showResults() {
+    let total = 0;
+    let rows = "";
+    document.getElementById("results").textContent = "";
+    for (let i = 1; i <= numberOfSubjects; i++) {
+        const value = document.getElementById("mark" + i).value;
+        const mark = Number(value);
+        if (value.trim() === "" || !Number.isFinite(mark) || mark < 0 || mark > 100) {
+            document.getElementById("error").textContent = "Enter a mark from 0 to 100 for subject " + i + ".";
+            return;
+        }
+        total = total + mark;
+        rows = rows + "<tr><td>Subject " + i + "</td><td>" + mark + "%</td><td>" + getGrade(mark) + "</td></tr>";
+    }
+    document.getElementById("error").textContent = "";
+    const average = total / numberOfSubjects;
+    document.getElementById("results").innerHTML = "<h2>Your results</h2><table><caption>Marks and grades for each subject</caption><thead><tr><th scope='col'>Subject</th><th scope='col'>Mark</th><th scope='col'>Grade</th></tr></thead><tbody>" + rows + "</tbody></table><p>Average: " + average.toFixed(2) + "% — Grade " + getGrade(average) + "</p>";
+}
+</script></body></html>

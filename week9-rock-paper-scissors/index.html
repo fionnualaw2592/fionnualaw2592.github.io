@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Week 9 - Rock Paper Scissors</title><style>body{font-family:Arial,sans-serif;background:#f0f4f8;color:#172c3d;padding:30px 15px}main{background:white;max-width:650px;margin:auto;padding:25px;border-radius:12px}button{background:#174c73;color:white;padding:12px 20px;margin:5px;border:0;border-radius:6px;font-size:16px;cursor:pointer}button:disabled{opacity:.5;cursor:default}input{padding:8px;font-size:16px;max-width:90px}label{display:block;margin:15px 0}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:10px;border-bottom:1px solid #ccc}</style></head>
+<body><main><h1>Rock, Paper, Scissors</h1><p>Week 9: Play up to 3 rounds. The game stops as soon as you win a round. Draws count as rounds.</p>
+<button id="rock" onclick="playGame('rock')">Rock</button><button id="paper" onclick="playGame('paper')">Paper</button><button id="scissors" onclick="playGame('scissors')">Scissors</button>
+<div aria-live="polite"><p id="choices">Make your choice to start.</p><p id="result"></p><p id="score">You: 0 | Computer: 0 | Draws: 0</p><p id="status">Round 1 of 3</p></div><ol id="history"></ol><button onclick="resetGame()">New game</button>
+</main><script>
+let playerScore = 0;
+let computerScore = 0;
+let draws = 0;
+let rounds = 0;
+let gameOver = false;
+const options = ["rock", "paper", "scissors"];
+
+function playGame(playerChoice) {
+    if (gameOver) { return; }
+    // Generate a fresh independent choice every round. Repeats are possible.
+    const randomNumber = Math.floor(Math.random() * 3);
+    const computerChoice = options[randomNumber];
+    rounds++;
+    let result;
+    if (playerChoice === computerChoice) {
+        result = "It's a draw!";
+        draws++;
+    } else if (
+        (playerChoice === "rock" && computerChoice === "scissors") ||
+        (playerChoice === "paper" && computerChoice === "rock") ||
+        (playerChoice === "scissors" && computerChoice === "paper")
+    ) {
+        result = "You win!";
+        playerScore++;
+        gameOver = true;
+    } else {
+        result = "Computer wins!";
+        computerScore++;
+    }
+    document.getElementById("choices").textContent = "You chose " + playerChoice + ". The computer chose " + computerChoice + ".";
+    document.getElementById("result").textContent = result;
+    document.getElementById("score").textContent = "You: " + playerScore + " | Computer: " + computerScore + " | Draws: " + draws;
+    const entry = document.createElement("li");
+    entry.textContent = "Round " + rounds + ": You chose " + playerChoice + ", computer chose " + computerChoice + ". " + result;
+    document.getElementById("history").appendChild(entry);
+    if (rounds === 3) { gameOver = true; }
+    if (gameOver) {
+        document.getElementById("status").textContent = "Game over after " + rounds + " round(s).";
+        // A loop disables all three choice buttons.
+        for (let i = 0; i < options.length; i++) {
+            document.getElementById(options[i]).disabled = true;
+        }
+    } else {
+        document.getElementById("status").textContent = "Round " + (rounds + 1) + " of 3";
+    }
+}
+function resetGame() {
+    playerScore = 0; computerScore = 0; draws = 0; rounds = 0; gameOver = false;
+    for (let i = 0; i < options.length; i++) {
+        document.getElementById(options[i]).disabled = false;
+    }
+    document.getElementById("choices").textContent = "Make your choice to start.";
+    document.getElementById("result").textContent = "";
+    document.getElementById("score").textContent = "You: 0 | Computer: 0 | Draws: 0";
+    document.getElementById("status").textContent = "Round 1 of 3";
+    document.getElementById("history").textContent = "";
+}
+</script></body></html>
