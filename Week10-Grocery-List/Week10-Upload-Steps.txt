@@ -1,0 +1,9 @@
+1. Open index.html from week10-grocery-list in a browser to try the app.
+2. Sign in to GitHub and open https://github.com/fionnualaw2592/fionnualaw2592.github.io
+3. On the main branch, choose Add file > Upload files. Drag the entire week10-grocery-list folder into the upload area. Check both paths begin with week10-grocery-list/. Do not replace the root index.html, CV or earlier labs.
+4. Use the commit message: Add Week 10 grocery list lab. Click Commit changes.
+5. Verify that week10-grocery-list/index.html is visible in the repository and opens correctly. Only after this succeeds, use the repository URL in step 2 for Moodle. You can also open the folder and copy its GitHub URL to give a more direct source link.
+6. Update the publication status in Week10-Moodle-Submission.txt after confirming the commit. The supplied status accurately records the attempted connector upload.
+7. Open https://moodle2026.ncirl.ie/mod/assign/view.php?id=8960 and submit the verified GitHub link as requested by the lab. Attach the submission text if the submission form allows it. Complete Moodle's save/submit steps and click Complete Lesson where offered.
+
+All CSS and JavaScript are inside index.html. No installation or extra libraries are required. The existing local CV and earlier labs were not modified. The connector upload returned 403, so these deliverables have not been committed or pushed.

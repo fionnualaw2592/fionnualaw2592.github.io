@@ -1,0 +1,25 @@
+NCI Week 10 Lab: Question 6
+Web Design and Client-Side Scripting
+
+Grocery list application
+
+This HTML, CSS and JavaScript application lets users add and remove groceries. Items are displayed in a bulleted unordered list using ul and li elements.
+
+The groceries array stores the items. push() adds an item to the end of the array. splice(index, 1) removes the selected item. Unlike pop(), which removes only the last element, splice() can remove an item at any position.
+
+A submit handler adds an item when the Add item button is clicked or Enter is pressed. A click handler on each Remove button removes that item. displayGroceries() uses a loop and DOM manipulation to rebuild the list from the array. Blank entries are rejected and surrounding spaces are removed. The list resets when the page is refreshed.
+
+Automated browser tests passed for adding with the button and Enter, blank input, trimming spaces, removing a middle item, duplicate items, correct removal after indices change, displaying HTML symbols as text, returning to an empty list, adding again, mobile width without horizontal overflow, and refresh reset. No JavaScript page errors were detected.
+
+File location in repository:
+week10-grocery-list/index.html
+
+Publication status: The GitHub connector returned 403 (Resource not accessible by integration). No commit or push was completed. Upload the folder before submitting the repository link.
+
+Repository destination:
+https://github.com/fionnualaw2592/fionnualaw2592.github.io
+
+Moodle submission:
+https://moodle2026.ncirl.ie/mod/assign/view.php?id=8960
+
+Prepared with AI assistance for the code, explanation and testing. Review the code and ensure you can explain the array and event handlers before submission.

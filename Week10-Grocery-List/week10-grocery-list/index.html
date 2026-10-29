@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grocery List | Week 10 Lab</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { margin: 0; padding: 40px 16px; font-family: Arial, sans-serif; background: #f2f5ef; color: #213728; }
+        main { max-width: 580px; margin: auto; padding: 32px; background: white; border-radius: 16px; box-shadow: 0 8px 28px #21372812; }
+        .week { color: #52634d; font-size: 14px; }
+        h1 { margin: 12px 0; font-size: 34px; }
+        p { line-height: 1.6; }
+        label { display: block; margin: 24px 0 8px; font-weight: bold; }
+        .entry { display: flex; gap: 8px; }
+        input { min-width: 0; flex: 1; padding: 12px; border: 1px solid #768770; border-radius: 6px; font: inherit; }
+        button { padding: 12px 16px; border: 0; border-radius: 6px; background: #315c39; color: white; font: inherit; cursor: pointer; }
+        button:hover { background: #24462b; }
+        button:focus-visible, input:focus-visible { outline: 3px solid #a66a00; outline-offset: 3px; }
+        h2 { margin-top: 28px; font-size: 21px; }
+        ul { padding-left: 24px; list-style-type: disc; }
+        li { padding: 10px 0; border-bottom: 1px solid #e1e7dc; overflow-wrap: anywhere; }
+        li button { margin-left: 12px; padding: 7px 10px; background: #f0e7e3; color: #6b3022; font-size: 14px; }
+        li button:hover { background: #e2d1c9; }
+        #message { min-height: 26px; color: #52634d; }
+        .note { margin-top: 24px; font-size: 13px; color: #52634d; }
+        @media (max-width: 400px) { main { padding: 22px; } .entry { flex-direction: column; } }
+    </style>
+</head>
+<body>
+    <main>
+        <p class="week">Week 10 Lab · Question 6</p>
+        <h1>My grocery list</h1>
+        <p>Add the groceries you need. Use the Remove button beside an item to take it off your list.</p>
+        <form id="groceryForm">
+            <label for="itemInput">Grocery item</label>
+            <div class="entry">
+                <input id="itemInput" type="text" placeholder="e.g. Milk" maxlength="80" autocomplete="off" aria-describedby="message">
+                <button type="submit">Add item</button>
+            </div>
+        </form>
+        <p id="message" role="status" aria-live="polite"></p>
+        <h2>Your items</h2>
+        <p id="emptyMessage">Your list is empty. Add your first item above.</p>
+        <ul id="groceryList" aria-label="Grocery items"></ul>
+        <p class="note">This list is kept for this visit. Refreshing the page starts a new list.</p>
+    </main>
+    <script>
+        // Store the grocery items in an array.
+        var groceries = [];
+        var form = document.getElementById("groceryForm");
+        var itemInput = document.getElementById("itemInput");
+        var groceryList = document.getElementById("groceryList");
+        var message = document.getElementById("message");
+        var emptyMessage = document.getElementById("emptyMessage");
+
+        // Rebuild the unordered list from the current array.
+        function displayGroceries() {
+            groceryList.innerHTML = "";
+            emptyMessage.hidden = groceries.length > 0;
+
+            for (let i = 0; i < groceries.length; i++) {
+                var listItem = document.createElement("li");
+                var itemName = document.createElement("span");
+                // textContent displays user input as text, including HTML symbols.
+                itemName.textContent = groceries[i];
+                var removeButton = document.createElement("button");
+                removeButton.type = "button";
+                removeButton.textContent = "Remove";
+                removeButton.setAttribute("aria-label", "Remove " + groceries[i]);
+
+                // let gives each click handler the correct array index.
+                removeButton.addEventListener("click", function () {
+                    var removedItem = groceries[i];
+                    // Remove one item at index i. pop() would only remove the last item.
+                    groceries.splice(i, 1);
+                    displayGroceries();
+                    message.textContent = removedItem + " removed.";
+                    itemInput.focus();
+                });
+
+                listItem.appendChild(itemName);
+                listItem.appendChild(removeButton);
+                groceryList.appendChild(listItem);
+            }
+        }
+
+        // Submitting works with either the Add item button or the Enter key.
+        form.addEventListener("submit", function (event) {
+            event.preventDefault();
+            var newItem = itemInput.value.trim();
+            if (newItem === "") {
+                message.textContent = "Please enter a grocery item.";
+                itemInput.focus();
+                return;
+            }
+
+            // push() adds the new item to the end of the array.
+            groceries.push(newItem);
+            displayGroceries();
+            message.textContent = newItem + " added.";
+            itemInput.value = "";
+            itemInput.focus();
+        });
+
+        displayGroceries();
+    </script>
+</body>
+</html>
